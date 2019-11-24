@@ -1,0 +1,149 @@
+#include <iostream>
+using namespace std;
+
+int w = 0;
+int q = 0;
+int e = 0;
+
+struct Dots
+{
+	int x;
+	int y;
+};
+
+Dots* read (int countdots)
+{
+	Dots* DOTS = new Dots[countdots];
+	for (int i = 0; i < countdots; i++)
+	{
+		cin >> DOTS[i].x >> DOTS[i].y;
+	}
+	return DOTS;
+};
+
+void print(Dots* a, int countdots)
+{
+	for (int i = 0; i < countdots; i++)
+	{
+		cout << "(" << a[i].x << ";" << a[i].y << ")" << endl;
+	}
+}
+
+Dots* intersection(Dots* DOTS1, Dots* DOTS2, int countdots1, int countdots2)
+{
+	bool temp = false;
+	int length = countdots1;
+	if (countdots2 > length)
+		length = countdots2;
+	Dots* DOTSIntersectiontemp = new Dots[length];
+	for (int i = 0; i < countdots1; i++)
+	{
+		for (int j = 0; j < countdots2; j++)
+		{
+			if (DOTS1[i].x == DOTS2[j].x && DOTS1[i].y == DOTS2[j].y)
+			{
+				DOTSIntersectiontemp[q].x = DOTS1[i].x;
+				DOTSIntersectiontemp[q].y = DOTS1[i].y;
+				temp = true;
+				q++;
+			}
+		}
+	}
+		Dots* DOTSIntersection = new Dots[q];
+		for (int i = 0; i < q; i++)
+		{
+			DOTSIntersection[i].x = DOTSIntersectiontemp[i].x;
+			DOTSIntersection[i].y = DOTSIntersectiontemp[i].y;
+		}
+	return DOTSIntersection;
+}
+
+Dots* difference(Dots* DOTS1, Dots* DOTS2, int countdots1, int countdots2)
+{
+	int length = countdots1;
+	if (countdots2 > length)
+		length = countdots2;
+	Dots* DOTSDifferencetemp = new Dots[length];
+	bool temp = true;
+	for (int i = 0; i < countdots1; i++)
+	{
+		for (int j = 0; j < countdots2; j++)
+		{
+			if (DOTS1[i].x == DOTS2[j].x && DOTS1[i].y == DOTS2[j].y)
+			{
+				temp = false;
+			}
+		}
+		if (temp)
+		{
+			DOTSDifferencetemp[w].x = DOTS1[i].x;
+			DOTSDifferencetemp[w].y = DOTS1[i].y;
+			w++;
+		}
+		temp = true;
+	}
+	Dots* DOTSDifference = new Dots[w];
+	for (int i = 0; i < w; i++)
+	{
+		DOTSDifference[i].x = DOTSDifferencetemp[i].x;
+		DOTSDifference[i].y = DOTSDifferencetemp[i].y;
+	}
+	return DOTSDifference;
+}
+
+Dots* association(Dots* DOTS1, Dots* DOTS2, int countdots1, int countdots2)
+{
+	bool temp=true;
+	Dots* DOTSAssociationtemp = new Dots[countdots1 + countdots2];
+	for (int i = 0; i < countdots1; i++)
+	{
+		DOTSAssociationtemp[i].x = DOTS1[i].x;
+		DOTSAssociationtemp[i].y = DOTS1[i].y;
+		e++;
+	}
+	for (int i = 0; i < countdots2; i++)
+	{
+		for (int j = 0; j < countdots1; j++)
+		{
+			if (DOTS1[j].x == DOTS2[i].x && DOTS1[j].y == DOTS2[i].y)
+			{
+				temp = false;
+			}
+		}
+		if (temp)
+		{
+			DOTSAssociationtemp[e].x = DOTS2[i].x;
+			DOTSAssociationtemp[e].y = DOTS2[i].y;
+			e++;
+		}
+		temp = true;
+	}
+	Dots* DOTSAssociation = new Dots[e];
+	for (int i = 0; i < e; i++)
+	{
+		DOTSAssociation[i].x = DOTSAssociationtemp[i].x;
+		DOTSAssociation[i].y = DOTSAssociationtemp[i].y;
+	}
+	return DOTSAssociation;
+}
+
+int main()
+{
+	int countdots1, countdots2;
+	cout << "Enter count of first dots:";
+	cin >> countdots1;
+	cout << "Enter count of second dots:";
+	cin >> countdots2;
+	Dots* DOTS1 = read(countdots1);
+	Dots* DOTS2 = read(countdots2);
+	Dots* Intersection = intersection(DOTS1, DOTS2, countdots1, countdots2);
+	Dots* Difference = difference(DOTS1, DOTS2, countdots1, countdots2);
+	Dots* Association = association(DOTS1, DOTS2, countdots1, countdots2);
+	cout << "Peretin:" << endl;;
+	print(Intersection, q);
+	cout << "Riznitsa:"<<endl;
+	print(Difference, w);
+	cout << "Obyeadnya:" << endl;;
+	print(Association, e);
+}
+
