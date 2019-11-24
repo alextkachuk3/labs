@@ -1,0 +1,89 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Number
+{
+	string strNUM;
+	int lengthNUM;
+	int* arrayNUM = NULL;
+	int* fullarray = NULL;
+};
+
+void toArray(string Num, int length, int NUM[])
+{
+	for (int i = 0; i<length; i++)
+	{
+		NUM[i] = Num[i] - 48;
+	}
+}
+
+void makingfullarray(int fullarray[], int array[], int length)
+{
+	for (int i = --length, j=0; i >= 0; i--, j++)
+	{
+		fullarray[j] = array[i];
+	}
+}
+
+void summ(int NUM1[], int NUM2[], int& length, int result[])
+{
+	int temp = 0;
+	{
+		for (int i = 0; i < length; i++)
+		{
+			if (i == length - 1)
+			{
+				result[i] = NUM1[i] + NUM2[i] + temp;
+				continue;
+			}
+			result[i] = (NUM1[i] + NUM2[i] + temp) % 10;
+			temp = (NUM1[i] + NUM2[i] + temp) / 10;
+		}
+	}
+}
+void Print(int length, int NUM[])
+{
+	for (int i = --length; i >=0; i--)
+	{
+		cout << NUM[i];
+	}
+	cout << endl;
+}
+
+int main()
+{
+	Number NUM[5];
+	for (int i = 0; i < 4; i++)
+		cin >> NUM[i].strNUM;
+	for (int i = 0; i < 4; i++)
+		NUM[i].lengthNUM = NUM[i].strNUM.length();
+	for (int i = 0; i < 4; i++)
+		NUM[i].arrayNUM = new int[NUM[i].lengthNUM];
+	for (int i = 0; i < 4; i++)
+		toArray(NUM[i].strNUM, NUM[i].lengthNUM, NUM[i].arrayNUM);
+	int maxlength = NUM[0].lengthNUM;
+	for (int i = 1; i < 4; i++)
+	{
+		if (maxlength < NUM[i].lengthNUM)
+			maxlength = NUM[i].lengthNUM;
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		NUM[i].fullarray = new int[maxlength];
+	}
+	for (int i = 0; i < 4; i++)
+	{
+		NUM[i].fullarray = new int[maxlength]{0};
+		makingfullarray(NUM[i].fullarray, NUM[i].arrayNUM, NUM[i].lengthNUM);
+	}
+	NUM[4].lengthNUM = maxlength;
+	NUM[4].arrayNUM = new int[NUM[4].lengthNUM + 1]{0};
+	for (int i = 0; i < 4; i++)
+	{
+		summ(NUM[4].arrayNUM, NUM[i].fullarray,  NUM[4].lengthNUM, NUM[4].arrayNUM);
+	}
+	cout << "Summa:";
+	Print(NUM[4].lengthNUM, NUM[4].arrayNUM);
+	return 0;
+}
