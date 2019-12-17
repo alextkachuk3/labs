@@ -1,0 +1,65 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+	string text;
+	string path1 = "text.txt";
+	ifstream fin;
+	fin.open(path1);
+	if (!fin.is_open())
+		cout << "Ошибка открытия файла text" << endl;
+	else
+		cout << "Файл text открыт" << endl;
+	string array[256];
+	string array1[256];
+	string array2[256];
+	bool detection[256]{false};
+	
+	
+	int i = 0, j = 0;
+	while (!fin.eof())
+	{
+		fin >> array[i];
+		//cout << array[i];
+		i++;
+	};
+	int q = 0;
+	while (q < i)
+	{
+		array1[q] = array[q];
+		//cout << array1[q].length() << endl;
+
+		if (array1[q][array1[q].size() - 1] =='.')
+			break;
+		q++;
+	}
+	for(int t=q; t < i; t++)
+	{
+		array2[j] = array[t];
+		j++;
+	}
+	for(int temp1=0; temp1<q; temp1++)
+		for (int temp2 = 0; temp2 < j; temp2++)
+		{
+			if (array1[temp1] == array2[temp2])
+				detection[temp1] = true;
+		}
+	int posofword=0;
+	int longofshortword=256;
+	for (int temp1 = 0; temp1 < q; temp1++)
+	{
+		if (!detection[temp1]&&(array1[temp1].size()-1)<longofshortword)
+		{
+			longofshortword = array1[temp1].size() - 1;
+			posofword = temp1;
+		}
+	}
+	string shortword=array1[posofword];
+	cout << shortword;
+	return 0;
+}
